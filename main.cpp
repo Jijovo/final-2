@@ -3,7 +3,7 @@
 #include <string>
 #include <deque>
 #include <vector>
-#include <map>
+#include <list>      // replaced <map> with <list>
 using namespace std;
 
 //consts
@@ -28,14 +28,14 @@ struct muffinOrder
     muffinOrder* next;
 };
 
-//frienfship bracelet vector struct
+//friendship bracelet vector struct
 struct bracelet
 {
     string name;
     string fr;
 };
 
-//console map struct
+//console list struct
 struct console
 {
     string name;
@@ -94,16 +94,15 @@ int main()
         bracelets.push_back(newBracelet);
     }
 
-    //create map of consoles booth, key is position in queue, value is console struct
-    map<int, console> consolesBooth;
+    //create list of consoles booth
+    list<console> consolesBooth;
     for (int i = 0; i < START; i++)
     {
         console newConsole;
         newConsole.name = names[i];
         newConsole.console = consoles[rand() % 5];
-        consolesBooth[i] = newConsole;
+        consolesBooth.push_back(newConsole);
     }
-
 
     //run simulation, 10 rounds, 50% of customer joining each round, first in line is always served
     for (int i = 0; i < ROUNDS; i++)
@@ -111,68 +110,6 @@ int main()
         //display round
         cout << endl << "Round " << i + 1 << ": " <<endl;
         
-        //if customer joins coffee booth
-        if (rand() % 100 < JOIN)
-        {
-            //create new node
-            coffeeOrder* newNode = new coffeeOrder;
-            newNode->name = names[rand() % 8];
-            newNode->order = drinks[rand() % 5];
-            newNode->next = nullptr;
-            tail->next = newNode;
-            tail = newNode;
-            //print
-            cout << newNode->name << " joined the queue." << endl;
-        }
-
-        //customer joins muffin booth
-        if (rand() % 100 < JOIN)
-        {
-            //create new node
-            muffinOrder* newNode = new muffinOrder;
-            newNode->name = names[rand() % 8];
-            newNode->order = muffins[rand() % 5];
-            newNode->next = nullptr;
-            muffinTail->next = newNode;
-            muffinTail = newNode;
-            //print
-            cout << newNode->name << " joined the coffee queue." << endl;
-        }
-
-        //customer joins bracelet booth
-        if (rand() % 100 < JOIN)
-        {
-            //create new node
-            bracelet newBracelet;
-            newBracelet.name = names[rand() % 8];
-            newBracelet.fr = names[rand() % 8];
-            bracelets.push_back(newBracelet);
-            //print
-            cout << newBracelet.name << " joined the bracelet booth." << endl;
-        }
-
-        //customer joins console booth
-        if (rand() % 100 < JOIN)
-        {
-            //create new node
-            console newConsole;
-            newConsole.name = names[rand() % 8];
-            newConsole.console = consoles[rand() % 5];
-            //find highest key in map
-            int highestKey = 0;
-            for (map<int, console>::iterator it = consolesBooth.begin(); it != consolesBooth.end(); it++)
-            {
-                if (it->first > highestKey)
-                {
-                    highestKey = it->first;
-                }
-            }
-            //add new node to map
-            consolesBooth[highestKey + 1] = newConsole;
-            //print
-            cout << newConsole.name << " joined the console booth." << endl;
-        }
-
         //check if coffee queue if empty
         if (head == nullptr)
         {
@@ -239,25 +176,79 @@ int main()
             cout << endl;
         }
         
-        //check if console map is empty
-        if (consolesBooth.size() == 0)
+        //check if console list is empty
+        if (consolesBooth.empty())
         {
             cout << "The console booth is empty." << endl << endl;
         }
         else {
-            //serve head lowest key in map
-            console temp = consolesBooth.begin()->second;
-            consolesBooth.erase(consolesBooth.begin());
-            cout << temp.name << " gets a " << temp.console << endl;
+            //serve head (front of list)
+            console served = consolesBooth.front();
+            consolesBooth.pop_front();
+            cout << served.name << " ordered console: " << served.console << endl;
 
-            //print remaining map
+            //print remaining list
             cout << endl << "Console Booth:" << endl;
-            for (int i = 0; i < consolesBooth.size(); i++)
+            for (auto& entry : consolesBooth)   // auto used here
             {
-                cout << consolesBooth[i].name << endl;
+                cout << entry.name << endl;
             }
             cout << endl;
         }
+
+        //if customer joins coffee booth
+        if (rand() % 100 < JOIN)
+        {
+            //create new node
+            coffeeOrder* newNode = new coffeeOrder;
+            newNode->name = names[rand() % 8];
+            newNode->order = drinks[rand() % 5];
+            newNode->next = nullptr;
+            tail->next = newNode;
+            tail = newNode;
+            //print
+            cout << newNode->name << " joined the queue." << endl;
+        }
+
+        //customer joins muffin booth
+        if (rand() % 100 < JOIN)
+        {
+            //create new node
+            muffinOrder* newNode = new muffinOrder;
+            newNode->name = names[rand() % 8];
+            newNode->order = muffins[rand() % 5];
+            newNode->next = nullptr;
+            muffinTail->next = newNode;
+            muffinTail = newNode;
+            //print
+            cout << newNode->name << " joined the coffee queue." << endl;
+        }
+
+        //customer joins bracelet booth
+        if (rand() % 100 < JOIN)
+        {
+            //create new node
+            bracelet newBracelet;
+            newBracelet.name = names[rand() % 8];
+            newBracelet.fr = names[rand() % 8];
+            bracelets.push_back(newBracelet);
+            //print
+            cout << newBracelet.name << " joined the bracelet booth." << endl;
+        }
+
+        //customer joins console booth
+        if (rand() % 100 < JOIN)
+        {
+            //create new node
+            console newConsole;
+            newConsole.name = names[rand() % 8];
+            newConsole.console = consoles[rand() % 5];
+            //add to back of list
+            consolesBooth.push_back(newConsole);
+            //print
+            cout << newConsole.name << " joined the console booth." << endl;
+        }
+
     }
 
     //delete linked list
