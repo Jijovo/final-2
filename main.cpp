@@ -245,19 +245,9 @@ int main()
             cout << "The console booth is empty." << endl << endl;
         }
         else {
-            //serve head
-            //find lowest key
-            int lowestKey = MAX;
-            for (map<int, console>::iterator it = consolesBooth.begin(); it != consolesBooth.end(); it++)
-            {
-                if (it->first < lowestKey)
-                {
-                    lowestKey = it->first;
-                }
-            }
-            //serve head
-            console temp = consolesBooth[lowestKey];
-            consolesBooth.erase(lowestKey);
+            //serve head lowest key in map
+            console temp = consolesBooth.begin()->second;
+            consolesBooth.erase(consolesBooth.begin());
             cout << temp.name << " gets a " << temp.console << endl;
 
             //print remaining map
