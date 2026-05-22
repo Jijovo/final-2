@@ -76,7 +76,7 @@ int main()
 
     //create bracelet vector
     vector<bracelet> bracelets;
-    for (int i = 0; i < 8; i++)
+    for (int i = 0; i < START; i++)
     {
         bracelet newBracelet;
         newBracelet.name = names[i];
@@ -131,9 +131,9 @@ int main()
         }
 
         //check if coffee queue if empty
-        if (head->next == nullptr)
+        if (head == nullptr)
         {
-            cout << "The coffee queue is empty." << endl;
+            cout << "The coffee queue is empty." << endl << endl;
         }
         else {
             //serve head
@@ -156,7 +156,7 @@ int main()
         //check if muffin queue is empty
         if (muffinHead->next == nullptr)
         {
-            cout << "The muffin queue is empty." << endl;
+            cout << "The muffin queue is empty." << endl << endl;
         }
         else {
             //serve head
@@ -179,7 +179,7 @@ int main()
         //check if bracelet vector is empty
         if (bracelets.size() == 0)
         {
-            cout << "The bracelet booth is empty." << endl;
+            cout << "The bracelet booth is empty." << endl << endl;
         }
         else {
             //serve head
@@ -205,6 +205,8 @@ int main()
         currentd = currentd->next;
         delete temp;
     }
+    head = nullptr;
+    currentd = nullptr;
 
     //delete muffin deque
     muffinOrder* currentm = muffinHead;
@@ -214,12 +216,8 @@ int main()
         currentm = currentm->next;
         delete temp;
     }
-
-    //delete bracelet vector
-    for (int i = 0; i < bracelets.size(); i++)
-    {
-        delete &bracelets[i];
-    }
+    muffinHead = nullptr;
+    currentm = nullptr;
 
     return 0;
 }
