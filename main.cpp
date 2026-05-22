@@ -10,6 +10,7 @@ using namespace std;
 const int ROUNDS = 10;
 const int JOIN = 50;
 const int START = 2;
+const int MAX = 1000;
 
 //coffee booth linked list struct
 struct coffeeOrder
@@ -150,6 +151,28 @@ int main()
             cout << newBracelet.name << " joined the bracelet booth." << endl;
         }
 
+        //customer joins console booth
+        if (rand() % 100 < JOIN)
+        {
+            //create new node
+            console newConsole;
+            newConsole.name = names[rand() % 8];
+            newConsole.console = consoles[rand() % 5];
+            //find highest key in map
+            int highestKey = 0;
+            for (map<int, console>::iterator it = consolesBooth.begin(); it != consolesBooth.end(); it++)
+            {
+                if (it->first > highestKey)
+                {
+                    highestKey = it->first;
+                }
+            }
+            //add new node to map
+            consolesBooth[highestKey + 1] = newConsole;
+            //print
+            cout << newConsole.name << " joined the console booth." << endl;
+        }
+
         //check if coffee queue if empty
         if (head == nullptr)
         {
@@ -212,6 +235,36 @@ int main()
             for (int i = 0; i < bracelets.size(); i++)
             {
                 cout << bracelets[i].name << endl;
+            }
+            cout << endl;
+        }
+        
+        //check if console map is empty
+        if (consolesBooth.size() == 0)
+        {
+            cout << "The console booth is empty." << endl << endl;
+        }
+        else {
+            //serve head
+            //find lowest key
+            int lowestKey = MAX;
+            for (map<int, console>::iterator it = consolesBooth.begin(); it != consolesBooth.end(); it++)
+            {
+                if (it->first < lowestKey)
+                {
+                    lowestKey = it->first;
+                }
+            }
+            //serve head
+            console temp = consolesBooth[lowestKey];
+            consolesBooth.erase(lowestKey);
+            cout << temp.name << " gets a " << temp.console << endl;
+
+            //print remaining map
+            cout << endl << "Console Booth:" << endl;
+            for (int i = 0; i < consolesBooth.size(); i++)
+            {
+                cout << consolesBooth[i].name << endl;
             }
             cout << endl;
         }
