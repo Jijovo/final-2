@@ -10,7 +10,8 @@ using namespace std;
 const int ROUNDS = 10;
 const int JOIN = 50;
 const int START = 2;
-const int MAX = 1000;
+const int NAMES = 8;
+const int BOOTH = 5;
 
 //coffee booth linked list struct
 struct coffeeOrder
@@ -54,15 +55,15 @@ int main()
 
     //create head node
     coffeeOrder* head = new coffeeOrder;
-    head->name = names[rand() % 8];
-    head->order = drinks[rand() % 5];
+    head->name = names[rand() % NAMES];
+    head->order = drinks[rand() % BOOTH];
     //create randomised linked list with 3 customers and their orders
     coffeeOrder* tail = head;
     for (int i = 0; i < START; i++)
     {
         coffeeOrder* newNode = new coffeeOrder;
-        newNode->name = names[rand() % 8];
-        newNode->order = drinks[rand() % 5];
+        newNode->name = names[rand() % NAMES];
+        newNode->order = drinks[rand() % BOOTH];
         newNode->next = nullptr;
         tail->next = newNode;
         tail = newNode;
@@ -70,15 +71,15 @@ int main()
 
     //create muffin deque
     muffinOrder* muffinHead = new muffinOrder;
-    muffinHead->name = names[rand() % 8];
-    muffinHead->order = muffins[rand() % 5];
+    muffinHead->name = names[rand() % NAMES];
+    muffinHead->order = muffins[rand() % BOOTH];
     muffinHead->next = nullptr;
     muffinOrder* muffinTail = muffinHead;
     for (int i = 0; i < START; i++)
     {
         muffinOrder* newNode = new muffinOrder;
-        newNode->name = names[rand() % 8];
-        newNode->order = muffins[rand() % 5];
+        newNode->name = names[rand() % NAMES];
+        newNode->order = muffins[rand() % BOOTH];
         newNode->next = nullptr;
         muffinTail->next = newNode;
         muffinTail = newNode;
@@ -89,8 +90,8 @@ int main()
     for (int i = 0; i < START; i++)
     {
         bracelet newBracelet;
-        newBracelet.name = names[i];
-        newBracelet.fr = names[rand() % 8];
+        newBracelet.name = names[rand() % NAMES];
+        newBracelet.fr = names[rand() % NAMES];
         bracelets.push_back(newBracelet);
     }
 
@@ -99,8 +100,8 @@ int main()
     for (int i = 0; i < START; i++)
     {
         console newConsole;
-        newConsole.name = names[i];
-        newConsole.console = consoles[rand() % 5];
+        newConsole.name = names[rand() % NAMES];
+        newConsole.console = consoles[rand() % BOOTH];
         consolesBooth.push_back(newConsole);
     }
 
@@ -108,7 +109,7 @@ int main()
     for (int i = 0; i < ROUNDS; i++)
     {
         //display round
-        cout << endl << "Round " << i + 1 << ": " <<endl;
+        cout << endl <<"------" << endl << "Round " << i + 1 << ": " <<endl << "------" << endl << endl;
         
         //check if coffee queue if empty
         if (head == nullptr)
@@ -122,15 +123,23 @@ int main()
             cout << temp->name << " ordered: " << temp->order << "." << endl;
             delete temp;
 
-            //print remaining queue
-            coffeeOrder* current = head;
-            cout << endl << "Coffee Queue:" << endl;
-            while (current != nullptr)
+            //second check after serving
+            if (head == nullptr)
             {
-                cout << current->name << endl;
-                current = current->next;
+                cout << "The coffee queue is now empty." << endl << endl;
             }
-            cout << endl;
+            else
+            {
+                //print remaining queue
+                cout << endl << "Coffee Queue:" << endl;
+                coffeeOrder* current = head;
+                while (current != nullptr)
+                {
+                    cout << current->name << endl;
+                    current = current->next;
+                }
+                cout << endl;
+            }
         }
 
         //check if muffin queue is empty
@@ -145,15 +154,23 @@ int main()
             cout << temp->name << " ordered: " << temp->order << "." << endl;
             delete temp;
 
-            //print remaining queue
-            muffinOrder* current = muffinHead;
-            cout << endl << "Muffin Queue:" << endl;
-            while (current != nullptr)
+            //second check after serving
+            if (muffinHead == nullptr)
             {
-                cout << current->name << endl;
-                current = current->next;
+                cout << "The muffin queue is now empty." << endl << endl;
             }
-            cout << endl;
+            else
+            {
+                //print remaining queue
+                cout << endl << "Muffin Queue:" << endl;
+                muffinOrder* current = muffinHead;
+                while (current != nullptr)
+                {
+                    cout << current->name << endl;
+                    current = current->next;
+                }
+                cout << endl;
+            }
         }
 
         //check if bracelet vector is empty
@@ -167,13 +184,21 @@ int main()
             bracelets.erase(bracelets.begin());
             cout << temp.name << " gets a bracelet for: " << temp.fr << endl;
 
-            //print remaining vector
-            cout << endl << "Bracelet Booth:" << endl;
-            for (int i = 0; i < bracelets.size(); i++)
+            //second check after serving
+            if (bracelets.empty())
             {
-                cout << bracelets[i].name << endl;
+                cout << "The bracelet booth is now empty." << endl << endl;
             }
-            cout << endl;
+            else
+            {
+                //print remaining vector
+                cout << endl << "Bracelet Booth:" << endl;
+                for (int i = 0; i < bracelets.size(); i++)
+                {
+                    cout << bracelets[i].name << endl;
+                }
+                cout << endl;
+            }
         }
         
         //check if console list is empty
@@ -187,13 +212,21 @@ int main()
             consolesBooth.pop_front();
             cout << served.name << " ordered console: " << served.console << endl;
 
-            //print remaining list
-            cout << endl << "Console Booth:" << endl;
-            for (auto& entry : consolesBooth)   // auto used here
+            //second check after serving
+            if (consolesBooth.empty())
             {
-                cout << entry.name << endl;
+                cout << "The console booth is now empty." << endl << endl;
             }
-            cout << endl;
+            else
+            {
+                //print remaining list
+                cout << endl << "Console Booth:" << endl;
+                for (auto& entry : consolesBooth)   // auto used here
+                {
+                    cout << entry.name << endl;
+                }
+                cout << endl;
+            }
         }
 
         //if customer joins coffee booth
@@ -201,8 +234,8 @@ int main()
         {
             //create new node
             coffeeOrder* newNode = new coffeeOrder;
-            newNode->name = names[rand() % 8];
-            newNode->order = drinks[rand() % 5];
+            newNode->name = names[rand() % NAMES];
+            newNode->order = drinks[rand() % BOOTH];
             newNode->next = nullptr;
             tail->next = newNode;
             tail = newNode;
@@ -215,8 +248,8 @@ int main()
         {
             //create new node
             muffinOrder* newNode = new muffinOrder;
-            newNode->name = names[rand() % 8];
-            newNode->order = muffins[rand() % 5];
+            newNode->name = names[rand() % NAMES];
+            newNode->order = muffins[rand() % BOOTH];
             newNode->next = nullptr;
             muffinTail->next = newNode;
             muffinTail = newNode;
@@ -229,8 +262,8 @@ int main()
         {
             //create new node
             bracelet newBracelet;
-            newBracelet.name = names[rand() % 8];
-            newBracelet.fr = names[rand() % 8];
+            newBracelet.name = names[rand() % NAMES];
+            newBracelet.fr = names[rand() % BOOTH];
             bracelets.push_back(newBracelet);
             //print
             cout << newBracelet.name << " joined the bracelet booth." << endl;
@@ -241,14 +274,13 @@ int main()
         {
             //create new node
             console newConsole;
-            newConsole.name = names[rand() % 8];
-            newConsole.console = consoles[rand() % 5];
+            newConsole.name = names[rand() % NAMES];
+            newConsole.console = consoles[rand() % BOOTH];
             //add to back of list
             consolesBooth.push_back(newConsole);
             //print
             cout << newConsole.name << " joined the console booth." << endl;
         }
-
     }
 
     //delete linked list
