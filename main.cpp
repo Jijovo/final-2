@@ -1,6 +1,7 @@
 //Ezzat Mohamadein | ComSc 210 | Final 2
 #include <iostream>
 #include <string>
+#include <deque>
 using namespace std;
 
 //consts
@@ -14,6 +15,14 @@ struct coffeeOrder
     string name;
     string order;
     coffeeOrder* next;
+};
+
+//muffin booth deque struct
+struct muffinOrder
+{
+    string name;
+    string order;
+    muffinOrder* next;
 };
 
 int main()
@@ -40,13 +49,29 @@ int main()
         tail = newNode;
     }
 
+    //create muffin deque
+    muffinOrder* muffinHead = new muffinOrder;
+    muffinHead->name = names[rand() % 8];
+    muffinHead->order = drinks[rand() % 5];
+    muffinHead->next = nullptr;
+    muffinOrder* muffinTail = muffinHead;
+    for (int i = 0; i < START; i++)
+    {
+        muffinOrder* newNode = new muffinOrder;
+        newNode->name = names[rand() % 8];
+        newNode->order = drinks[rand() % 5];
+        newNode->next = nullptr;
+        muffinTail->next = newNode;
+        muffinTail = newNode;
+    }
+
     //run simulation, 10 rounds, 50% of customer joining each round, first in line is always served
     for (int i = 0; i < ROUNDS; i++)
     {
         //display round
         cout << endl << "Round " << i + 1 << ": " <<endl;
         
-        //if customer joins
+        //if customer joins coffee booth
         if (rand() % 100 < JOIN)
         {
             //create new node
@@ -60,10 +85,24 @@ int main()
             cout << newNode->name << " joined the queue." << endl;
         }
 
-        //check if queue if empty
+        //customer joins muffin booth
+        if (rand() % 100 < JOIN)
+        {
+            //create new node
+            muffinOrder* newNode = new muffinOrder;
+            newNode->name = names[rand() % 8];
+            newNode->order = drinks[rand() % 5];
+            newNode->next = nullptr;
+            muffinTail->next = newNode;
+            muffinTail = newNode;
+            //print
+            cout << newNode->name << " joined the queue." << endl;
+        }
+
+        //check if coffee queue if empty
         if (head->next == nullptr)
         {
-            cout << "The queue is empty." << endl;
+            cout << "The coffee queue is empty." << endl;
         }
         else {
             //serve head
@@ -82,6 +121,8 @@ int main()
             }
             cout << endl;
         }
+
+
     }
 
     //delete linked list
