@@ -30,6 +30,7 @@ int main()
     //names and drinks to be picked randomly for orders
     string names[] = {"Ali", "Mark", "John", "Bob", "Joe", "Nate", "Will", "Ethan"};
     string drinks[] = {"Latte", "Cappuccino", "Flat White", "Americano", "Espresso"};
+    string muffins[] = {"Blueberry", "Strawberry", "Chocolate Chip", "Vanilla", "Pumpkin"};
     //set random seed
     srand(time(0));
 
@@ -52,14 +53,14 @@ int main()
     //create muffin deque
     muffinOrder* muffinHead = new muffinOrder;
     muffinHead->name = names[rand() % 8];
-    muffinHead->order = drinks[rand() % 5];
+    muffinHead->order = muffins[rand() % 5];
     muffinHead->next = nullptr;
     muffinOrder* muffinTail = muffinHead;
     for (int i = 0; i < START; i++)
     {
         muffinOrder* newNode = new muffinOrder;
         newNode->name = names[rand() % 8];
-        newNode->order = drinks[rand() % 5];
+        newNode->order = muffins[rand() % 5];
         newNode->next = nullptr;
         muffinTail->next = newNode;
         muffinTail = newNode;
@@ -91,12 +92,12 @@ int main()
             //create new node
             muffinOrder* newNode = new muffinOrder;
             newNode->name = names[rand() % 8];
-            newNode->order = drinks[rand() % 5];
+            newNode->order = muffins[rand() % 5];
             newNode->next = nullptr;
             muffinTail->next = newNode;
             muffinTail = newNode;
             //print
-            cout << newNode->name << " joined the queue." << endl;
+            cout << newNode->name << " joined the coffee queue." << endl;
         }
 
         //check if coffee queue if empty
@@ -108,12 +109,12 @@ int main()
             //serve head
             coffeeOrder* temp = head;
             head = head->next;
-            cout << temp->name << " is served." << endl;
+            cout << temp->name << " ordered: " << temp->order << "." << endl;
             delete temp;
 
             //print remaining queue
             coffeeOrder* current = head;
-            cout << endl << "Queue:" << endl;
+            cout << endl << "Coffee Queue:" << endl;
             while (current != nullptr)
             {
                 cout << current->name << endl;
@@ -122,7 +123,28 @@ int main()
             cout << endl;
         }
 
+        //check if muffin queue is empty
+        if (muffinHead->next == nullptr)
+        {
+            cout << "The muffin queue is empty." << endl;
+        }
+        else {
+            //serve head
+            muffinOrder* temp = muffinHead;
+            muffinHead = muffinHead->next;
+            cout << temp->name << " ordered: " << temp->order << "." << endl;
+            delete temp;
 
+            //print remaining queue
+            muffinOrder* current = muffinHead;
+            cout << endl << "Muffin Queue:" << endl;
+            while (current != nullptr)
+            {
+                cout << current->name << endl;
+                current = current->next;
+            }
+            cout << endl;
+        }
     }
 
     //delete linked list
@@ -131,6 +153,15 @@ int main()
     {
         coffeeOrder* temp = currentd;
         currentd = currentd->next;
+        delete temp;
+    }
+
+    //delete muffin deque
+    muffinOrder* currentm = muffinHead;
+    while (currentm != nullptr)
+    {
+        muffinOrder* temp = currentm;
+        currentm = currentm->next;
         delete temp;
     }
 
