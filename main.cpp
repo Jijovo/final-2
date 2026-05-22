@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <deque>
+#include <vector>
 using namespace std;
 
 //consts
@@ -23,6 +24,13 @@ struct muffinOrder
     string name;
     string order;
     muffinOrder* next;
+};
+
+//frienfship bracelet vector struct
+struct bracelet
+{
+    string name;
+    string fr;
 };
 
 int main()
@@ -66,6 +74,16 @@ int main()
         muffinTail = newNode;
     }
 
+    //create bracelet vector
+    vector<bracelet> bracelets;
+    for (int i = 0; i < 8; i++)
+    {
+        bracelet newBracelet;
+        newBracelet.name = names[i];
+        newBracelet.fr = names[rand() % 8];
+        bracelets.push_back(newBracelet);
+    }
+
     //run simulation, 10 rounds, 50% of customer joining each round, first in line is always served
     for (int i = 0; i < ROUNDS; i++)
     {
@@ -98,6 +116,18 @@ int main()
             muffinTail = newNode;
             //print
             cout << newNode->name << " joined the coffee queue." << endl;
+        }
+
+        //customer joins bracelet booth
+        if (rand() % 100 < JOIN)
+        {
+            //create new node
+            bracelet newBracelet;
+            newBracelet.name = names[rand() % 8];
+            newBracelet.fr = names[rand() % 8];
+            bracelets.push_back(newBracelet);
+            //print
+            cout << newBracelet.name << " joined the bracelet booth." << endl;
         }
 
         //check if coffee queue if empty
@@ -145,6 +175,26 @@ int main()
             }
             cout << endl;
         }
+
+        //check if bracelet vector is empty
+        if (bracelets.size() == 0)
+        {
+            cout << "The bracelet booth is empty." << endl;
+        }
+        else {
+            //serve head
+            bracelet temp = bracelets[0];
+            bracelets.erase(bracelets.begin());
+            cout << temp.name << " gets a bracelet for: " << temp.fr << endl;
+
+            //print remaining vector
+            cout << endl << "Bracelet Booth:" << endl;
+            for (int i = 0; i < bracelets.size(); i++)
+            {
+                cout << bracelets[i].name << endl;
+            }
+            cout << endl;
+        }
     }
 
     //delete linked list
@@ -163,6 +213,12 @@ int main()
         muffinOrder* temp = currentm;
         currentm = currentm->next;
         delete temp;
+    }
+
+    //delete bracelet vector
+    for (int i = 0; i < bracelets.size(); i++)
+    {
+        delete &bracelets[i];
     }
 
     return 0;
