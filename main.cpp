@@ -3,6 +3,7 @@
 #include <string>
 #include <deque>
 #include <vector>
+#include <map>
 using namespace std;
 
 //consts
@@ -33,12 +34,20 @@ struct bracelet
     string fr;
 };
 
+//console map struct
+struct console
+{
+    string name;
+    string console;
+};
+
 int main()
 {
     //names and drinks to be picked randomly for orders
     string names[] = {"Ali", "Mark", "John", "Bob", "Joe", "Nate", "Will", "Ethan"};
     string drinks[] = {"Latte", "Cappuccino", "Flat White", "Americano", "Espresso"};
     string muffins[] = {"Blueberry", "Strawberry", "Chocolate Chip", "Vanilla", "Pumpkin"};
+    string consoles[] = {"Xbox", "Playstation", "Nintendo", "PC", "Mobile"};
     //set random seed
     srand(time(0));
 
@@ -83,6 +92,17 @@ int main()
         newBracelet.fr = names[rand() % 8];
         bracelets.push_back(newBracelet);
     }
+
+    //create map of consoles booth, key is position in queue, value is console struct
+    map<int, console> consolesBooth;
+    for (int i = 0; i < START; i++)
+    {
+        console newConsole;
+        newConsole.name = names[i];
+        newConsole.console = consoles[rand() % 5];
+        consolesBooth[i] = newConsole;
+    }
+
 
     //run simulation, 10 rounds, 50% of customer joining each round, first in line is always served
     for (int i = 0; i < ROUNDS; i++)
