@@ -3,6 +3,11 @@
 #include <string>
 using namespace std;
 
+//consts
+const int ROUNDS = 10;
+const int JOIN = 50;
+const int START = 2;
+
 //coffee booth linked list struct
 struct coffeeOrder
 {
@@ -25,7 +30,7 @@ int main()
     head->order = drinks[rand() % 5];
     //create randomised linked list with 3 customers and their orders
     coffeeOrder* tail = head;
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < START; i++)
     {
         coffeeOrder* newNode = new coffeeOrder;
         newNode->name = names[rand() % 8];
@@ -36,13 +41,13 @@ int main()
     }
 
     //run simulation, 10 rounds, 50% of customer joining each round, first in line is always served
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < ROUNDS; i++)
     {
         //display round
         cout << endl << "Round " << i + 1 << ": " <<endl;
         
         //if customer joins
-        if (rand() % 100 < 50)
+        if (rand() % 100 < JOIN)
         {
             //create new node
             coffeeOrder* newNode = new coffeeOrder;
